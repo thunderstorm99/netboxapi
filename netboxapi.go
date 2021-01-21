@@ -23,6 +23,6 @@ func (n *NetboxConnection) GetTenantGroups() interface{} {
 
 // GetAPIRaw performs a GET request onto any netbox API endpoint specified with url
 func (n *NetboxConnection) GetAPIRaw(url string) interface{} {
-	a := apihandler.APICall{URL: n.BaseURL + url, Method: http.MethodGet, Header: map[string]string{"Authorization": n.Token}}
+	a := apihandler.APICall{URL: n.BaseURL + url, Method: http.MethodGet, Header: map[string]string{"Authorization": n.Token}, Insecure: n.Insecure}
 	return a.Exec()
 }
