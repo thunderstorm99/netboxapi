@@ -15,22 +15,33 @@ func NewNetboxConnection(url string, token string) NetboxConnection {
 }
 
 // GetTenants gets all tenants from this NetboxConnection
-func (n *NetboxConnection) GetTenants() interface{} {
-	var tenantsNew []Tenant
-	// resultToArray(n.GetAPIRaw("/api/tenancy/tenants"), &tenantsNew)
-	return tenantsNew
+func (n *NetboxConnection) GetTenants() ([]Tenant, error) {
+	url := "/api/tenancy/tenants"
+
+	var tenants []Tenant
+	err := n.getAPI(url, &tenants)
+	if err != nil {
+		return nil, err
+	}
+	return tenants, nil
 }
 
 // GetTenantGroups gets Tenant Groups from this NetboxConnection
-func (n *NetboxConnection) GetTenantGroups() interface{} {
-	return nil
-	// return n.GetAPIRaw("/api/tenancy/tenant-groups/")
+func (n *NetboxConnection) GetTenantGroups() ([]TenantGroup, error) {
+	url := "/api/tenancy/tenant-groups/"
+
+	var tenantGroups []TenantGroup
+	err := n.getAPI(url, &tenantGroups)
+	if err != nil {
+		return nil, err
+	}
+
+	return tenantGroups, nil
 }
 
 // GetVLANs gets VLANs from this NetboxConnection,
 // if tenantID is specified it will only get VLANs for that specific tenant
 func (n *NetboxConnection) GetVLANs(tenantID ...int) ([]VLAN, error) {
-	// var vlans []interface{}
 	url := "/api/ipam/vlans/"
 
 	if tenantID != nil {
@@ -38,20 +49,12 @@ func (n *NetboxConnection) GetVLANs(tenantID ...int) ([]VLAN, error) {
 		url += fmt.Sprintf("?tenant_id=%d", tenantID[0])
 	}
 
-	// call url
-	var a, err = n.GetAPIRaw(url)
+	var v []VLAN
+	err := n.getAPI(url, &v)
 	if err != nil {
 		return nil, err
 	}
-
-	// cast result to VLAN array
-	var vlans []VLAN
-	err = resultToOtherStructure(a, &vlans)
-	if err != nil {
-		return nil, err
-	}
-
-	return vlans, nil
+	return v, nil
 }
 
 // GetIPAdresses gets all IP addresses from this NetboxConnection
@@ -72,13 +75,8 @@ func (n *NetboxConnection) GetIPAdresses(config ...ipconfig) ([]IPAddress, error
 		}
 	}
 
-	a, err := n.GetAPIRaw(url)
-	if err != nil {
-		return []IPAddress{}, err
-	}
-
 	var i []IPAddress
-	err = resultToOtherStructure(a, &i)
+	err := n.getAPI(url, i)
 	if err != nil {
 		return nil, err
 	}
@@ -86,8 +84,23 @@ func (n *NetboxConnection) GetIPAdresses(config ...ipconfig) ([]IPAddress, error
 	return i, nil
 }
 
-// GetAPIRaw performs a GET request onto any netbox API endpoint specified with url
-func (n *NetboxConnection) GetAPIRaw(url string) (APIAnswer, error) {
+// getAPI ...
+func (n *NetboxConnection) getAPI(url string, output interface{}) error {
+	a, err := n.getAPIRaw(url)
+	if err != nil {
+		return err
+	}
+
+	err = resultToOtherStructure(a, &output)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// getAPIRaw performs a GET request onto any netbox API endpoint specified with url
+func (n *NetboxConnection) getAPIRaw(url string) (APIAnswer, error) {
 	api := apihandler.APICall{URL: n.BaseURL + url, Method: http.MethodGet, Header: map[string]string{"Authorization": "Token " + n.Token}, Insecure: n.Insecure}
 
 	// create new variable that holds the answer of the API
@@ -114,7 +127,7 @@ func (n *NetboxConnection) GetAPIRaw(url string) (APIAnswer, error) {
 		// trim the base off of the next url
 		nextURL := strings.TrimPrefix(answer.Next, n.BaseURL)
 
-		next, err := n.GetAPIRaw(nextURL)
+		next, err := n.getAPIRaw(nextURL)
 		if err != nil {
 			return APIAnswer{}, err
 		}

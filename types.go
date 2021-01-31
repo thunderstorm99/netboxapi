@@ -97,3 +97,10 @@ type ipconfig struct {
 	TenantID int
 	Family   int
 }
+
+// TenantGroup is a struct that holds info for a tenant group from the Netbox API
+type TenantGroup struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+	Slug string `json:"slug"`
+}
