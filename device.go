@@ -4,11 +4,11 @@ import (
 	"fmt"
 )
 
-type deviceConfig struct {
+type DeviceConfig struct {
 	Name string
 }
 
-type device struct {
+type Device struct {
 	Config      interface{} `json:"local_context_data,omitempty"`
 	Name        string      `json:"name"`
 	ID          int         `json:"id"`
@@ -18,9 +18,9 @@ type device struct {
 }
 
 // GetDevice retreaves info for one specific device identified by ID
-func (n *NetboxConnection) GetDevice(ID int) device {
+func (n *NetboxConnection) GetDevice(ID int) Device {
 	url := fmt.Sprintf("/api/dcim/devices/%d", ID)
-	var d device
+	var d Device
 	err := n.getAPISingle(url, &d)
 	if err != nil {
 		panic(err)
@@ -30,7 +30,7 @@ func (n *NetboxConnection) GetDevice(ID int) device {
 }
 
 // GetDevices will retrieve all devices listed in netbox
-func (n *NetboxConnection) GetDevices(config ...deviceConfig) []device {
+func (n *NetboxConnection) GetDevices(config ...DeviceConfig) []Device {
 	url := "/api/dcim/devices?limit=500"
 
 	// check to see if deviceConfig was provided
@@ -40,7 +40,7 @@ func (n *NetboxConnection) GetDevices(config ...deviceConfig) []device {
 		}
 	}
 
-	var d []device
+	var d []Device
 	err := n.getAPI(url, &d)
 	if err != nil {
 		panic(err)

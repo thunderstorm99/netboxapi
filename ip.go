@@ -43,13 +43,13 @@ type IPAddress struct {
 	} `json:"interface"`
 }
 
-type ipconfig struct {
+type IPconfig struct {
 	TenantID int
 	Family   int
 }
 
 // GetIPAdresses gets all IP addresses from this NetboxConnection
-func (n *NetboxConnection) GetIPAdresses(config ...ipconfig) ([]IPAddress, error) {
+func (n *NetboxConnection) GetIPAdresses(config ...IPconfig) ([]IPAddress, error) {
 	url := "/api/ipam/ip-addresses/?limit=500"
 
 	// check if any config was provided
