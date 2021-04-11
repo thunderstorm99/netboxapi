@@ -1,4 +1,4 @@
-package main
+package netboxapi
 
 import (
 	"encoding/json"
