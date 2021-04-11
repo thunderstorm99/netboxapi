@@ -43,7 +43,7 @@ func (n *NetboxConnection) GetServices(s ...ServiceConfig) []Service {
 		}
 		// check if VMID was provided
 		if s[0].VMID != 0 {
-			url += fmt.Sprintf("virtual_machine_id=%d&", s[0].DeviceID)
+			url += fmt.Sprintf("virtual_machine_id=%d&", s[0].VMID)
 		}
 		// check if Name was provided
 		if s[0].Name != "" {
