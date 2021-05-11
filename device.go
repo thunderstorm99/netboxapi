@@ -2,6 +2,7 @@ package netboxapi
 
 import (
 	"fmt"
+	"strings"
 )
 
 type DeviceConfig struct {
@@ -53,14 +54,26 @@ func (n *NetboxConnection) GetDevices(config ...DeviceConfig) []Device {
 
 	// check to see if deviceConfig was provided
 	if len(config) != 0 {
+		// check if name was provided
 		if config[0].Name != "" {
 			url += fmt.Sprintf("&name=%s", config[0].Name)
 		}
+
+		// check if tenant was provided
 		if config[0].Tenant != "" {
 			url += fmt.Sprintf("&tenant=%s", config[0].Tenant)
 		}
+
+		// check if role was provided
 		if config[0].Role != "" {
-			url += fmt.Sprintf("&role=%s", config[0].Role)
+
+			// Split multiple roles
+			roleSplit := strings.Split(config[0].Role, ",")
+
+			for _, role := range roleSplit {
+				// append for earch role
+				url += fmt.Sprintf("&role=%s", role)
+			}
 		}
 	}
 
