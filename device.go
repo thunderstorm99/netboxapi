@@ -7,6 +7,7 @@ import (
 type DeviceConfig struct {
 	Name   string
 	Tenant string
+	Role   string
 }
 
 type Device struct {
@@ -48,6 +49,9 @@ func (n *NetboxConnection) GetDevices(config ...DeviceConfig) []Device {
 		}
 		if config[0].Tenant != "" {
 			url += fmt.Sprintf("&tenant=%s", config[0].Tenant)
+		}
+		if config[0].Role != "" {
+			url += fmt.Sprintf("&role=%s", config[0].Role)
 		}
 	}
 
