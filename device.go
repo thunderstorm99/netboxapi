@@ -21,6 +21,7 @@ type Device struct {
 	DeviceType  DeviceType  `json:"device_type"`
 	DeviceRole  NameID      `json:"device_role"`
 	Serial      string      `json:"serial"`
+	Tenant      NameID      `json:"tenant"`
 }
 
 type DeviceType struct {
