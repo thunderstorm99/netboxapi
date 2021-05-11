@@ -17,6 +17,12 @@ type Device struct {
 	PrimaryIP   DeviceIP    `json:"primary_ip,omitempty"`
 	PrimaryIPv4 DeviceIP    `json:"primary_ip4,omitempty"`
 	PrimaryIPv6 DeviceIP    `json:"primary_ip6,omitempty"`
+	DeviceType  DeviceType  `json:"device_type"`
+}
+
+type DeviceType struct {
+	Model        string `json:"model"`
+	Manufacturer NameID `json:"manufacturer"`
 }
 
 type DeviceIP struct {

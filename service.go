@@ -4,25 +4,20 @@ import (
 	"fmt"
 )
 
-type NameID struct {
-	Name string `json:"name,omitempty"`
-	ID   int    `json:"id,omitempty"`
-}
-
 type Protocol struct {
 	Label string `json:"label"`
 	Value int    `json:"value"`
 }
 
 type Service struct {
-	Description string   `json:"description"`
-	ID          int      `json:"id"`
-	IPAddresses []IP     `json:"ipaddresses"`
-	Name        string   `json:"name"`
-	Port        int      `json:"port"`
-	Protocol    Protocol `json:"protocol"`
-	Device      NameID   `json:"device,omitempty"`
-	VM          NameID   `json:"virtual_machine,omitempty"`
+	Description string     `json:"description"`
+	ID          int        `json:"id"`
+	IPAddresses []DeviceIP `json:"ipaddresses"`
+	Name        string     `json:"name"`
+	Port        int        `json:"port"`
+	Protocol    Protocol   `json:"protocol"`
+	Device      NameID     `json:"device,omitempty"`
+	VM          NameID     `json:"virtual_machine,omitempty"`
 }
 
 type ServiceConfig struct {
