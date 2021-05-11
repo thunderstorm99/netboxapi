@@ -5,16 +5,24 @@ import (
 )
 
 type DeviceConfig struct {
-	Name string
+	Name   string
+	Tenant string
 }
 
 type Device struct {
 	Config      interface{} `json:"local_context_data,omitempty"`
 	Name        string      `json:"name"`
 	ID          int         `json:"id"`
-	PrimaryIP   string      `json:"primary_ip,omitempty"`
-	PrimaryIPv4 string      `json:"primary_ip4,omitempty"`
-	PrimaryIPv6 string      `json:"primary_ip6,omitempty"`
+	PrimaryIP   DeviceIP    `json:"primary_ip,omitempty"`
+	PrimaryIPv4 DeviceIP    `json:"primary_ip4,omitempty"`
+	PrimaryIPv6 DeviceIP    `json:"primary_ip6,omitempty"`
+}
+
+type DeviceIP struct {
+	ID      int    `json:"id"`
+	URL     string `json:"url"`
+	Familiy int    `json:"family"`
+	Address string `json:"address"`
 }
 
 // GetDevice retreaves info for one specific device identified by ID
@@ -37,6 +45,9 @@ func (n *NetboxConnection) GetDevices(config ...DeviceConfig) []Device {
 	if len(config) != 0 {
 		if config[0].Name != "" {
 			url += fmt.Sprintf("&name=%s", config[0].Name)
+		}
+		if config[0].Tenant != "" {
+			url += fmt.Sprintf("&tenant=%s", config[0].Tenant)
 		}
 	}
 
