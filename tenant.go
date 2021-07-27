@@ -13,12 +13,7 @@ type Tenant struct {
 	Tags         []string    `json:"tags"`
 	LastUpdated  time.Time   `json:"last_updated"`
 	CustomFields interface{} `json:"custom_fields"`
-	Group        struct {
-		ID   int    `json:"id"`
-		Name string `json:"name"`
-		Slug string `json:"slug"`
-		URL  string `json:"url"`
-	} `json:"group,omitempty"`
+	Group        Short       `json:"group,omitempty"`
 }
 
 // TenantGroup is a struct that holds info for a tenant group from the Netbox API
@@ -30,25 +25,16 @@ type TenantGroup struct {
 
 // GetTenants gets all tenants from this NetboxConnection
 func (n *NetboxConnection) GetTenants() ([]Tenant, error) {
-	url := "/api/tenancy/tenants"
-
 	var tenants []Tenant
-	err := n.getAPI(url, &tenants)
-	if err != nil {
-		return nil, err
-	}
-	return tenants, nil
+	err := n.getAPI("/api/tenancy/tenants", &tenants)
+
+	return tenants, err
 }
 
 // GetTenantGroups gets Tenant Groups from this NetboxConnection
 func (n *NetboxConnection) GetTenantGroups() ([]TenantGroup, error) {
-	url := "/api/tenancy/tenant-groups/"
-
 	var tenantGroups []TenantGroup
-	err := n.getAPI(url, &tenantGroups)
-	if err != nil {
-		return nil, err
-	}
+	err := n.getAPI("/api/tenancy/tenant-groups/", &tenantGroups)
 
-	return tenantGroups, nil
+	return tenantGroups, err
 }
