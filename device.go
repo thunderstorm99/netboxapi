@@ -9,6 +9,7 @@ type DeviceConfig struct {
 	Name   string
 	Tenant string
 	Role   string
+	Rack   int
 }
 
 type Device struct {
@@ -50,7 +51,7 @@ func (n *NetboxConnection) GetDevice(ID int) Device {
 }
 
 // GetDevices will retrieve all devices listed in netbox
-func (n *NetboxConnection) GetDevices(config ...DeviceConfig) []Device {
+func (n *NetboxConnection) GetDevices(config ...DeviceConfig) ([]Device, error) {
 	url := "/api/dcim/devices?limit=500"
 
 	// check to see if deviceConfig was provided
@@ -76,12 +77,15 @@ func (n *NetboxConnection) GetDevices(config ...DeviceConfig) []Device {
 				url += fmt.Sprintf("&role=%s", role)
 			}
 		}
+
+		// check if rack was provided
+		if config[0].Rack != 0 {
+			url += fmt.Sprintf("&rack_id=%d", config[0].Rack)
+		}
 	}
 
 	var d []Device
 	err := n.getAPI(url, &d)
-	if err != nil {
-		panic(err)
-	}
-	return d
+
+	return d, err
 }
