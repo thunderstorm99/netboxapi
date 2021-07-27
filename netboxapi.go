@@ -60,7 +60,7 @@ func (n *NetboxConnection) getAPIRaw(url string) (APIAnswer, error) {
 	var answer APIAnswer
 
 	// calling API
-	log.Println("calling URL", api.URL)
+	// log.Println("calling URL", api.URL)
 	_, _, err := api.Exec(&answer)
 	if err != nil {
 		return APIAnswer{}, err
