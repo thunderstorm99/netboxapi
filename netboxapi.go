@@ -17,9 +17,9 @@ type NetboxConnection struct {
 
 // APIAnswer is the answer from the netbox API
 type APIAnswer struct {
-	Count   int           `json:"count"`
-	Next    string        `json:"next"`
-	Results []interface{} `json:"results"`
+	Count   int    `json:"count"`
+	Next    string `json:"next"`
+	Results []any  `json:"results"`
 }
 
 // NewNetboxConnection creates a new connection to a netbox via url and token
@@ -28,7 +28,7 @@ func NewNetboxConnection(url string, token string) NetboxConnection {
 }
 
 // getAPI executes an API call with an array as an answer
-func (n *NetboxConnection) getAPI(url string, output interface{}) error {
+func (n *NetboxConnection) getAPI(url string, output any) error {
 	a, err := n.getAPIRaw(url)
 	if err != nil {
 		return err
@@ -43,7 +43,7 @@ func (n *NetboxConnection) getAPI(url string, output interface{}) error {
 }
 
 // getAPISingle executes an API call with a single answer
-func (n *NetboxConnection) getAPISingle(url string, output interface{}) error {
+func (n *NetboxConnection) getAPISingle(url string, output any) error {
 	api := apihandler.APICall{URL: n.BaseURL + url, Method: http.MethodGet, Header: map[string]string{"Authorization": "Token " + n.Token}, Insecure: n.Insecure}
 
 	// calling API
@@ -67,25 +67,26 @@ func (n *NetboxConnection) getAPIRaw(url string) (APIAnswer, error) {
 	}
 
 	// check for pagination
-	if answer.Next != "" {
-		// check if BaseURL is https
-		if strings.HasPrefix(n.BaseURL, "https://") {
-			// check if Next URL is http (which it should not be), but if so upgrade to https
-			if strings.HasPrefix(answer.Next, "http://") {
-				// upgrade http to https
-				answer.Next = strings.Replace(answer.Next, "http://", "https://", 1)
-			}
-		}
-
-		// trim the base off of the next url
-		nextURL := strings.TrimPrefix(answer.Next, n.BaseURL)
-		next, err := n.getAPIRaw(nextURL)
-		if err != nil {
-			return APIAnswer{}, err
-		}
-		// append all results of next to these results
-		answer.Results = append(answer.Results, next.Results...)
+	if answer.Next == "" {
+		return answer, nil
 	}
+
+	// check if BaseURL is https
+	// check if Next URL is http (which it should not be), but if so upgrade to https
+	if strings.HasPrefix(n.BaseURL, "https://") && strings.HasPrefix(answer.Next, "http://") {
+		// upgrade http to https
+		answer.Next = strings.Replace(answer.Next, "http://", "https://", 1)
+	}
+
+	// trim the base off of the next url
+	nextURL := strings.TrimPrefix(answer.Next, n.BaseURL)
+	next, err := n.getAPIRaw(nextURL)
+	if err != nil {
+		return APIAnswer{}, err
+	}
+
+	// append all results of next to these results
+	answer.Results = append(answer.Results, next.Results...)
 
 	return answer, nil
 }

@@ -14,12 +14,12 @@ type IP struct {
 }
 
 type VM struct {
-	Config      interface{} `json:"local_context_data,omitempty"`
-	Name        string      `json:"name"`
-	ID          int         `json:"id"`
-	PrimaryIP   IP          `json:"primary_ip,omitempty"`
-	PrimaryIPv4 IP          `json:"primary_ip4,omitempty"`
-	PrimaryIPv6 IP          `json:"primary_ip6,omitempty"`
+	Config      any    `json:"local_context_data,omitempty"`
+	Name        string `json:"name"`
+	ID          int    `json:"id"`
+	PrimaryIP   IP     `json:"primary_ip,omitempty"`
+	PrimaryIPv4 IP     `json:"primary_ip4,omitempty"`
+	PrimaryIPv6 IP     `json:"primary_ip6,omitempty"`
 }
 
 func (n *NetboxConnection) GetVMs(config ...VMConfig) []VM {

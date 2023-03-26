@@ -4,16 +4,16 @@ import "time"
 
 // Tenant is a type that holds all info on a tenant from the netbox api
 type Tenant struct {
-	Name         string      `json:"name"`
-	Slug         string      `json:"slug"`
-	ID           int         `json:"id"`
-	Created      string      `json:"created"`
-	Comments     string      `json:"comments"`
-	Description  string      `json:"description"`
-	Tags         []string    `json:"tags"`
-	LastUpdated  time.Time   `json:"last_updated"`
-	CustomFields interface{} `json:"custom_fields"`
-	Group        Short       `json:"group,omitempty"`
+	Name         string    `json:"name"`
+	Slug         string    `json:"slug"`
+	ID           int       `json:"id"`
+	Created      string    `json:"created"`
+	Comments     string    `json:"comments"`
+	Description  string    `json:"description"`
+	Tags         []string  `json:"tags"`
+	LastUpdated  time.Time `json:"last_updated"`
+	CustomFields any       `json:"custom_fields"`
+	Group        Short     `json:"group,omitempty"`
 }
 
 // TenantGroup is a struct that holds info for a tenant group from the Netbox API

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 )
 
-func resultToOtherStructure(input APIAnswer, output interface{}) error {
+func resultToOtherStructure(input APIAnswer, output any) error {
 	// get JSON representation of results
 	c, err := json.Marshal(input.Results)
 	if err != nil {

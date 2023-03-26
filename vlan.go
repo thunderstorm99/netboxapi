@@ -4,16 +4,16 @@ import "fmt"
 
 // VLAN is the structure that holds info on VLANs
 type VLAN struct {
-	Created     string      `json:"created"`
-	Description string      `json:"description"`
-	Group       interface{} `json:"group"`
-	ID          int         `json:"id"`
-	Name        string      `json:"name"`
-	Role        interface{} `json:"role"`
-	Site        interface{} `json:"site"`
-	Tags        []string    `json:"tags"`
-	Tenant      interface{} `json:"tenant"`
-	VID         int         `json:"vid"`
+	Created     string   `json:"created"`
+	Description string   `json:"description"`
+	Group       any      `json:"group"`
+	ID          int      `json:"id"`
+	Name        string   `json:"name"`
+	Role        any      `json:"role"`
+	Site        any      `json:"site"`
+	Tags        []string `json:"tags"`
+	Tenant      any      `json:"tenant"`
+	VID         int      `json:"vid"`
 	Status      struct {
 		Label string `json:"label"`
 		Value int    `json:"value"`

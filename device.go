@@ -13,20 +13,20 @@ type DeviceConfig struct {
 }
 
 type Device struct {
-	Config      interface{} `json:"local_context_data,omitempty"`
-	ID          int         `json:"id"`
-	Name        string      `json:"name"`
-	DisplayName string      `json:"display_name"`
-	PrimaryIP   DeviceIP    `json:"primary_ip,omitempty"`
-	PrimaryIPv4 DeviceIP    `json:"primary_ip4,omitempty"`
-	PrimaryIPv6 DeviceIP    `json:"primary_ip6,omitempty"`
-	DeviceType  DeviceType  `json:"device_type"`
-	DeviceRole  Short       `json:"device_role"`
-	Serial      string      `json:"serial"`
-	Tenant      Short       `json:"tenant"`
-	Platform    Short       `json:"platform,omitempty"`
-	AssetTag    string      `json:"asset_tag"`
-	Site        Short       `json:"site"`
+	Config      any        `json:"local_context_data,omitempty"`
+	ID          int        `json:"id"`
+	Name        string     `json:"name"`
+	DisplayName string     `json:"display_name"`
+	PrimaryIP   DeviceIP   `json:"primary_ip,omitempty"`
+	PrimaryIPv4 DeviceIP   `json:"primary_ip4,omitempty"`
+	PrimaryIPv6 DeviceIP   `json:"primary_ip6,omitempty"`
+	DeviceType  DeviceType `json:"device_type"`
+	DeviceRole  Short      `json:"device_role"`
+	Serial      string     `json:"serial"`
+	Tenant      Short      `json:"tenant"`
+	Platform    Short      `json:"platform,omitempty"`
+	AssetTag    string     `json:"asset_tag"`
+	Site        Short      `json:"site"`
 	Rack        struct {
 		ID          int    `json:"id"`
 		URL         string `json:"url"`

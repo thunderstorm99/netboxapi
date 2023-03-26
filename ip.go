@@ -7,18 +7,18 @@ import (
 
 // IPAddress is the structure that holds info on IPs
 type IPAddress struct {
-	Address      string      `json:"address"`
-	Created      string      `json:"created"`
-	Description  string      `json:"description"`
-	Family       int         `json:"family"`
-	ID           int         `json:"id"`
-	CustomFields interface{} `json:"custom_fields"`
-	LastUpdated  time.Time   `json:"last_updated"`
-	NATInside    string      `json:"nat_inside"`
-	NATOutside   string      `json:"nat_outside"`
-	Role         string      `json:"role"`
-	Tags         []string    `json:"tags"`
-	VRF          string      `json:"vrf"`
+	Address      string    `json:"address"`
+	Created      string    `json:"created"`
+	Description  string    `json:"description"`
+	Family       int       `json:"family"`
+	ID           int       `json:"id"`
+	CustomFields any       `json:"custom_fields"`
+	LastUpdated  time.Time `json:"last_updated"`
+	NATInside    string    `json:"nat_inside"`
+	NATOutside   string    `json:"nat_outside"`
+	Role         string    `json:"role"`
+	Tags         []string  `json:"tags"`
+	VRF          string    `json:"vrf"`
 	Status       struct {
 		Label string `json:"label"`
 		Value int    `json:"value"`
